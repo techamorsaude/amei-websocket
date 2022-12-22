@@ -1,0 +1,12 @@
+FROM imagem_base_api
+
+
+RUN ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+
+COPY . .
+
+RUN npm install
+RUN npm run build
+ENV STAGE=DEV
+EXPOSE 8080
+CMD ["npm", "run", "start:prod"]
