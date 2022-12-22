@@ -2,19 +2,24 @@
   <head>
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous"></script>
     <script>
+      
       const socket = io('ws://localhost:3000', {transports: ['websocket']});
+
       socket.on('connect', function() {
         console.log('Connected');
 
         socket.emit('consultaPacienteJoin', { profissional:10, consulta :15 });
         
       });
+
       socket.on('iniciar_consutla', function(data) {
         console.log('iniciar_consutla', data);
         const d = document.createElement("div");
         d.innerText = JSON.stringify(data);
         document.getElementById("bd").appendChild(d);
       });
+
+      
       socket.on('exception', function(data) {
         console.log('event', data);
       });
