@@ -33,11 +33,16 @@
       {
         socket.emit("consultaIniciar", { consulta:15});
       }
+      function finalizarConsulta()
+      {
+        socket.emit("consultaFinalizar", { consulta:15});
+      }
     </script>
   </head>
 
   <body id="bd">
     <button type="button" onclick="iniciarConsulta()">Iniciar consulta</button>
+    <button type="button" onclick="finalizarConsulta()">Finalizar consulta</button>
 
   </body>
 </html>

@@ -27,6 +27,7 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
     @MessageBody() data: ProfissionalDto,
     @ConnectedSocket() client: Socket,
   ): Promise<any> {
+    (client as any).tipo = 'medico';
     client.join(`room-p-${data.profissional}`);
     await this.internalSendConnections(data.profissional);
   }
@@ -34,15 +35,26 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
   @SubscribeMessage('consultaIniciar')
   async consultaIniciar(
     @MessageBody() data: ConsultaDto,
-    //@ConnectedSocket() client: Socket,
+    @ConnectedSocket() client: Socket,
   ): Promise<any> {
     const set = (mapConsultaClient[data.consulta] ??
       new Set<string>()) as Set<string>;
+
+    client.join(`room-consulta-${data.consulta}`);
 
     console.log(set);
     set.forEach((v) => {
       this.server.to(v).emit('iniciar_consutla', { consulta: data.consulta });
     });
+  }
+  @SubscribeMessage('consultaFinalizar')
+  async consultaFinalizar(
+    @MessageBody() data: ConsultaDto,
+    @ConnectedSocket() client: Socket,
+  ): Promise<any> {
+    //    const set = (mapConsultaClient[data.consulta] ??       new Set<string>()) as Set<string>;
+
+    client.leave(`room-consulta-${data.consulta}`);
   }
 
   async internalSendConnections(profissional: number) {
@@ -70,8 +82,11 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
     @MessageBody() data: ConsultaDto,
     @ConnectedSocket() client: Socket,
   ): Promise<any> {
+    (client as any).tipo = 'paciente';
     client.join(`room-p-${data.profissional}`);
-    //client.in('').fetchSockets();
+
+    //client.join(`room-consulta-${data.consulta}`);
+
     (client as any).consulta = data.consulta;
     mapClientConsulta[client.id] = data;
     const set = (mapConsultaClient[data.consulta] ??
@@ -85,10 +100,20 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
 
     await this.internalSendConnections(data.profissional);
 
+    const sockets = await this.server
+      .in(`room-consulta-${data.consulta}`)
+      .fetchSockets();
+
+    if (sockets.length > 0) {
+      client.emit('iniciar_consutla', { consulta: data.consulta });
+    }
+
     return data;
   }
 
   handleDisconnect(client: Socket) {
+    if ((client as any).tipo == 'medico') return;
+
     const consulta = mapClientConsulta[client.id];
     console.log('Disconnected ' + client.id, consulta);
 

@@ -15,7 +15,7 @@
       socket.on('iniciar_consutla', function(data) {
         console.log('iniciar_consutla', data);
         const d = document.createElement("div");
-        d.innerText = JSON.stringify(data);
+        d.innerText ='iniciar_consutla: ' + JSON.stringify(data);
         document.getElementById("bd").appendChild(d);
       });
 
