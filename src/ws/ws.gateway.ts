@@ -16,7 +16,8 @@ export const mapConsultaClient = new Map<number, Set<string>>();
   cors: {
     origin: '*',
   },
-  transports: ['websocket'],
+  path: "/ws"
+  //transports: ['websocket'],
 })
 export class WsGateway implements OnGatewayDisconnect<Socket> {
   @WebSocketServer()
