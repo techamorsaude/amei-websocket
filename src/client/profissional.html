@@ -3,8 +3,8 @@
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous"></script>
     <script>
       //const socket = io('ws://localhost:3000', {transports: ['websocket']});
-      const socket = io('http://193.123.107.198:4025', {transports: ['websocket']});
-      
+      //const socket = io('https://amei-dev.amorsaude.com.br/', { path: '/ws' ,transports: ['websocket']});
+      const socket = io('http://193.123.107.198:4025/', {transports: ['websocket']});
       
       socket.on('connect', function() {
         console.log('Connected');

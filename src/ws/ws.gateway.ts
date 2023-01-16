@@ -44,7 +44,7 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
 
     console.log(set);
     set.forEach((v) => {
-      this.server.to(v).emit('iniciar_consutla', { consulta: data.consulta });
+      this.server.to(v).emit('iniciar_consulta', { consulta: data.consulta });
     });
   }
   @SubscribeMessage('consultaFinalizar')
@@ -52,7 +52,14 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
     @MessageBody() data: ConsultaDto,
     @ConnectedSocket() client: Socket,
   ): Promise<any> {
-    //    const set = (mapConsultaClient[data.consulta] ??       new Set<string>()) as Set<string>;
+    
+    const set = (mapConsultaClient[data.consulta] ??
+      new Set<string>()) as Set<string>;
+
+    //console.log(set);
+    set.forEach((v) => {
+      this.server.to(v).emit('finalizar_consulta', { consulta: data.consulta });
+    });
 
     client.leave(`room-consulta-${data.consulta}`);
   }

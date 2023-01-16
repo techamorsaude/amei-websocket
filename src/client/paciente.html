@@ -3,7 +3,8 @@
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous"></script>
     <script>
       //const socket = io('ws://localhost:3000', {transports: ['websocket']});
-      const socket = io('http://193.123.107.198:4025/', {transports: ['websocket']});
+      //const socket = io('https://amei-dev.amorsaude.com.br/ws', {transports: ['websocket']});
+	  const socket = io('http://193.123.107.198:4025/', {transports: ['websocket']});
 
       socket.on('connect', function() {
         console.log('Connected');
@@ -12,10 +13,16 @@
         
       });
 
-      socket.on('iniciar_consutla', function(data) {
-        console.log('iniciar_consutla', data);
+      socket.on('iniciar_consulta', function(data) {
+        console.log('iniciar_consulta', data);
         const d = document.createElement("div");
-        d.innerText ='iniciar_consutla: ' + JSON.stringify(data);
+        d.innerText ='iniciar_consulta: ' + JSON.stringify(data);
+        document.getElementById("bd").appendChild(d);
+      });
+      socket.on('finalizar_consulta', function(data) {
+        console.log('finalizar_consulta', data);
+        const d = document.createElement("div");
+        d.innerText ='finalizar_consulta: ' + JSON.stringify(data);
         document.getElementById("bd").appendChild(d);
       });
 
