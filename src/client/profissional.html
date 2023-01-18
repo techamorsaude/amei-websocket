@@ -10,7 +10,7 @@
       socket.on('connect', function() {
         console.log('Connected');
 
-        socket.emit('consultaMedicoJoin', { profissional:10});
+        socket.emit('consultaMedicoJoin', { profissional:11});
         
       });
 
@@ -32,11 +32,11 @@
       });
       function iniciarConsulta()
       {
-        socket.emit("consultaIniciar", { consulta:15});
+        socket.emit("consultaIniciar", { consulta:18});
       }
       function finalizarConsulta()
       {
-        socket.emit("consultaFinalizar", { consulta:15});
+        socket.emit("consultaFinalizar", { consulta:18});
       }
     </script>
   </head>
