@@ -2,15 +2,22 @@
   <head>
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" crossorigin="anonymous"></script>
     <script>
+      let socket;
+      
+      function conectar(){
       //const socket = io('ws://localhost:3000', {path:'/ws',transports: ['websocket']});
       //const socket = io('https://amei-dev.amorsaude.com.br/', { path: '/ws' ,transports: ['websocket']});
-	    const socket = io('https://amei-dev.amorsaude.com.br', {path:'/ws'});
+	    socket = io('https://amei-dev.amorsaude.com.br', {path:'/ws'});
       //const socket = io('http://193.123.107.198:4025/', {transports: ['websocket']});
       
       socket.on('connect', function() {
         console.log('Connected');
+        var data = { profissional: document.getElementById('medico').value,};
+        const d = document.createElement("div");
+        d.innerText ='Conectado ' + JSON.stringify(data);
+        document.getElementById("bd").appendChild(d);
 
-        socket.emit('consultaMedicoJoin', { profissional:11});
+        socket.emit('consultaMedicoJoin', data);
         
       });
 
@@ -30,18 +37,37 @@
       socket.on('disconnect', function() {
         console.log('Disconnected');
       });
+
+      }
+
+
       function iniciarConsulta()
       {
-        socket.emit("consultaIniciar", { consulta:18});
+        socket.emit("consultaIniciar", { consulta:document.getElementById('consulta').value});
       }
       function finalizarConsulta()
       {
-        socket.emit("consultaFinalizar", { consulta:18});
+        socket.emit("consultaFinalizar", { consulta:document.getElementById('consulta').value});
       }
     </script>
   </head>
 
   <body id="bd">
+    <div>
+      <label
+        >Médico:
+        <input id="medico" type="number" value="15" />
+      </label>
+    </div>
+    <div>
+      <button type="button" id="bt" onclick="conectar()">Conectar</button>
+    </div>
+    <div>
+      <label
+        >Consulta:
+        <input id="consulta" type="number" value="10" />
+      </label>
+    </div>
     <button type="button" onclick="iniciarConsulta()">Iniciar consulta</button>
     <button type="button" onclick="finalizarConsulta()">Finalizar consulta</button>
 

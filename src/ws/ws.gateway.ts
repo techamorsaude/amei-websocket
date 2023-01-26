@@ -24,6 +24,7 @@ enum ClientType {
     origin: '*',
   },
   path: '/ws',
+  pingTimeout: 60000
   //transports: ['websocket'],
 })
 export class WsGateway implements OnGatewayDisconnect<Socket> {
