@@ -186,7 +186,7 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
     if ((client as any).tipo == ClientType.MEDICO) {
       console.log('Disconnected medico: ', (client as any).profissional);
     } else {
-      console.log('Disconnected consulta: ', (client as any).consulta);
+      console.log('Disconnected consulta: ', (client as any).consulta, (client as any).profissional);
       client.leave(`room-p-${(client as any).profissional}`);
       client.leave(`room-consulta-${(client as any).consulta}`);
     }
