@@ -44,6 +44,8 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
   ): Promise<any> {
     
     if (!data?.profissional) {
+      console.log(
+        'consultaMedicoJoin Invalid parameters: ' + data);
       client.disconnect();
       return { error: true, message: 'invalid parameters' };
     }
