@@ -155,7 +155,9 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
     @MessageBody() data: ConsultaDto,
     @ConnectedSocket() client: Socket,
   ): Promise<any> {
+    
     (client as any).tipo = ClientType.PACIENTE;
+
     if (!data?.consulta || !data?.profissional) {
       console.log(
         'consultaPacienteJoin Invalid parameters: ' , data);
@@ -197,7 +199,7 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
   handleDisconnect(client: Socket) {
     if ((client as any).tipo == ClientType.MEDICO) {
       console.log('Disconnected medico: ', (client as any).profissional);
-    } else {
+    } else if ((client as any).tipo == ClientType.PACIENTE) {
       console.log('Disconnected consulta: ', (client as any).consulta, (client as any).profissional);
       client.leave(`room-p-${(client as any).profissional}`);
       client.leave(`room-consulta-${(client as any).consulta}`);
