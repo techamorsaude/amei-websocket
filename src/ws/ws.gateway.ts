@@ -52,6 +52,8 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
     (client as any).profissional = data.profissional;
 
    
+    console.log(
+      'Medico join: ' + (client as any).profissional);
 
     client.join(`room-p-${data.profissional}`);
     await this.internalSendConnections(data.profissional);
@@ -163,6 +165,9 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
     client.join(`room-p-${data.profissional}`);
     client.join(`room-consulta-${data.consulta}`);
 
+    console.log(
+      'Paciente consulta join: ' + (client as any).consulta);
+
     await this.internalSendConnections(data.profissional);
 
     const sockets = await this.server
@@ -172,6 +177,8 @@ export class WsGateway implements OnGatewayDisconnect<Socket> {
     if (sockets.find((s: any) => s.tipo == ClientType.MEDICO)) {
       client.emit(Events.iniciar_consulta_event, { consulta: data.consulta });
     }
+
+    
 
     return data;
   }
